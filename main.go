@@ -8,16 +8,31 @@ import (
 	"strings"
 )
 
+type ElementResponse struct{
+	Word string
+	Elements []element.Element
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
-	words := q.Get("words")
+    words := q.Get("words")
+    if len(words) == 0 {
+    	w.WriteHeader(http.StatusBadRequest)
+    	w.Write([]byte("Expected query parameters ?words=<words>"))
+    	log.Println("No words specified")
+    	return
+    }
+
+    i := 0
 	for _, word := range strings.Split(words, " "){
-		log.Println(word)
+		i++
+		log.Println("Word: ", i, word)
 		res := element.GetElements().GetElementsForWord(word)
+		elementRes := ElementResponse {Word: word, Elements: res}
 
-		j, _ := json.MarshalIndent(res, "", "    ")
+		j, _ := json.MarshalIndent(elementRes, "", "    ")
+		log.Println("Found elements", len(res))
 
-		log.Println(string(j))
 		w.Header()
 		w.Write(j)
 	}
