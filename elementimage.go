@@ -52,7 +52,7 @@ func createElementThumbNail(element element.Element) {
 
 	// Draw the element name
 	str = element.Name
-	gc.SetFontSize(10)
+	gc.SetFontSize(8)
 
 	l, _, r, _ = gc.GetStringBounds(str)
 	strW = r - l
