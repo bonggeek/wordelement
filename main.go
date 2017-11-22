@@ -1,4 +1,4 @@
-package wordelement
+package main
 
 import (
 	"log"
