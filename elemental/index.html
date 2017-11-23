@@ -2,6 +2,8 @@
 <head>
 <title>Word Element</title>
 
+<link rel="stylesheet" media="screen and (max-width: 600px)" type="text/css" href="small.css" />
+<link rel="stylesheet" type="text/css" href="default.css" />
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">google.load("jquery", "1.6.0");</script>
 <script type="text/javascript">
@@ -27,9 +29,9 @@
     // Make the actual CORS request.
     function fetchElement() {
         var words=document.getElementById('WordBox').value;
-        console.log(words);
-         // This is a sample server that supports CORS.
-        var url = 'http://localhost:8080?words=' + words;
+        $("#ResultImgDiv").empty();
+        // This is a sample server that supports CORS.
+        var url = 'http://elemental.eastus.cloudapp.azure.com?words=' + words;
         var xhr = createCORSRequest('GET', url);
         if (!xhr) {
             alert('CORS not supported');
@@ -56,14 +58,21 @@
                     str += '<sup>' + e.AtNumber + '</sup>';
                     str += e.Symbol;
                     str += ' ';
+                    
+                    var elem = document.createElement("img");
+                    elem.className = "ImageElement";
+                    elem.setAttribute("src", "./images/" + e.AtNumber + ".jpg");
+                    elem.setAttribute("alt", e.Name);
+                    $("#ResultImgDiv").append(elem);
                 }
+
+                $("#ResultImgDiv").append('<br>');
 
                 str += '\r\n';
             }
 
-            $("#ResultDiv").html(str);
+            //$("#ResultDiv").html(str);
 
-            console.log(res);
         };
         
         xhr.onerror = function() {
@@ -77,10 +86,17 @@
 </head>
 
 <body>
-    <h1>Welcome To Word-Element</h1>
-    <input type="text" id="WordBox" />
-    <input type="button" value="Elements!!" onclick="fetchElement()" />
-    <div id="ResultDiv">someres</div>
-</body>
-
+    <div id="mainDiv">
+        <img id="BannerImg" src="./banner.png" />
+        <div id="InputDiv">
+            <input type="text" id="WordBox" placeholder="Type a word"/>
+            <button id="WordButton" onclick="fetchElement()">Get Elements</button>
+        </div>
+        <div id="ResultImgDiv"></div>
+        <div id="ResultDiv"></div>
+   </div>
+   <div id="Footer">
+        <p>(c) Abhinaba Basu</p>
+    </div>
+ </body>
 </html>
