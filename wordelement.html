@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Word Element</title>
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("jquery", "1.6.0");</script>
+<script type="text/javascript">
+
+    // Create the XHR object.
+    function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+            // XHR for Chrome/Firefox/Opera/Safari.
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+            // XDomainRequest for IE.
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            // CORS not supported.
+            xhr = null;
+        }
+        return xhr;
+    }
+
+
+    // Make the actual CORS request.
+    function fetchElement() {
+        var words=document.getElementById('WordBox').value;
+        console.log(words);
+         // This is a sample server that supports CORS.
+        var url = 'http://localhost:8080?words=' + words;
+        var xhr = createCORSRequest('GET', url);
+        if (!xhr) {
+            alert('CORS not supported');
+            return;
+        }
+
+        // Response handlers.
+        xhr.onload = function() {
+            var text = xhr.responseText;
+            var res = JSON.parse(text);
+            if (res.length == 0){
+                return;
+            }
+            var str = '';
+            for (var i=0; i < res.length; i++){
+                var r = res[i];
+                str += '<h3>';
+                str += r.Word;
+                str += '</h3>';
+                str += '<br>';
+                
+                for(var j = 0; j < r.Elements.length; j++){
+                    var e = r.Elements[j];
+                    str += '<sup>' + e.AtNumber + '</sup>';
+                    str += e.Symbol;
+                    str += ' ';
+                }
+
+                str += '\r\n';
+            }
+
+            $("#ResultDiv").html(str);
+
+            console.log(res);
+        };
+        
+        xhr.onerror = function() {
+            $("#ResultDiv").html('<h3>Woops, there was an error making the request</h3>');
+        };
+
+        xhr.send();
+    }
+
+</script>
+</head>
+
+<body>
+    <h1>Welcome To Word-Element</h1>
+    <input type="text" id="WordBox" />
+    <input type="button" value="Elements!!" onclick="fetchElement()" />
+    <div id="ResultDiv">someres</div>
+</body>
+
+</html>
