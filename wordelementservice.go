@@ -15,6 +15,7 @@ type ElementResponse struct{
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
+	w.Header().Add("Access-Control-Allow-Origin", "*")
     words := q.Get("words")
     if len(words) == 0 {
     	w.WriteHeader(http.StatusBadRequest)
@@ -24,18 +25,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
     }
 
     i := 0
+    result := make([]ElementResponse,0)
 	for _, word := range strings.Split(words, " "){
 		i++
 		log.Println("Word: ", i, word)
 		res := element.GetElements().GetElementsForWord(word)
 		elementRes := ElementResponse {Word: word, Elements: res}
-
-		j, _ := json.MarshalIndent(elementRes, "", "    ")
+		result = append(result, elementRes)
 		log.Println("Found elements", len(res))
-
-		w.Header()
-		w.Write(j)
 	}
+
+	j, _ := json.MarshalIndent(result, "", "    ")
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(j)
 }
 
 func main() {
