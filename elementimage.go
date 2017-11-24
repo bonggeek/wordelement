@@ -23,6 +23,10 @@ func createElementThumbNail(element element.Element) {
 	gc.SetLineWidth(4)
 
 	// Draw a closed shape
+	if element.AtNumber > 118 {
+		gc.SetFillColor(color.RGBA{0xef, 0xef,0xef, 0xff})
+	}
+
 	gc.MoveTo(0, 0) // should always be called first for a new path
 	gc.LineTo(w, 0)
 	gc.LineTo(w, h)
@@ -68,7 +72,7 @@ func createElementThumbNail(element element.Element) {
 
 func main() {
 
-	elements := element.GetElements().GetAllElements()
+	elements := element.GetElements().GetAllElements(true)
 	for _, element := range elements{
 		createElementThumbNail(element)
 	}
