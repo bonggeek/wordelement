@@ -17,6 +17,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
 	w.Header().Add("Access-Control-Allow-Origin", "*")
     words := q.Get("words")
+    if len(words) > 200 {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Query too long"))
+		return
+	}
     if len(words) == 0 {
     	w.WriteHeader(http.StatusBadRequest)
     	w.Write([]byte("Expected query parameters ?words=<words>"))
@@ -29,6 +34,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	for _, word := range strings.Split(words, " "){
 		i++
 		log.Println("Word: ", i, word)
+		if len(word) > 50 {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Too long words"))
+			return
+		}
+
 		res := element.GetElements().GetElementsForWord(word)
 		elementRes := ElementResponse {Word: word, Elements: res}
 		result = append(result, elementRes)
