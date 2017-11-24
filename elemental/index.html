@@ -1,8 +1,10 @@
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Word Element</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="Description" content="Free website to analyze words to locate elements in them for fun and science">
+<meta name="author" content="Abhinaba Basu">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link rel="stylesheet" media="screen and (orientation:portrait)" type="text/css" href="small.css" />
 <link rel="stylesheet" media="screen and (min-width:200px) and (max-width: 799px)" type="text/css" href="small.css" />
@@ -84,6 +86,19 @@
 
         xhr.send();
     }
+
+    // function to hook up enter key on word box to fetch elements
+    $(function() {
+        $("#WordBox").keypress(function (e) {
+            if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+                fetchElement()
+                return false;
+            } else {
+                return true;
+            }
+        });
+    });
+
 
 </script>
 </head>
