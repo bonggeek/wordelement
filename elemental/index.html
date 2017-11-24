@@ -102,7 +102,6 @@
         });
     });
 
-
 </script>
 </head>
 
@@ -111,7 +110,7 @@
         <img id="BannerImg" src="./banner.png" />
         <div id="InputDiv">
             <p id="DescriptionText">Enter a word or name and see what it is made of</p>
-            <input type="text" id="WordBox" placeholder="Type a word"/>
+            <input type="text" id="WordBox" placeholder="Type a word" maxlength="50">
             <button id="WordButton" onclick="fetchElement()">Get Elements</button>
         </div>
         <div id="ResultImgDiv"></div>
