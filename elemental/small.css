@@ -76,7 +76,8 @@ body
     
 }
 
-#WordBox:focus{
+#WordBox:focus
+{
     outline: none;
 }
 
@@ -97,6 +98,16 @@ img.ImageElement
 #ResultImgDiv
 {
     padding: 15px 0px 0px 0px;
+    text-align: center;
+    justify-content: center;
+}
+
+#ResultDiv
+{
+    padding: 15px 0px 0px 0px;
+    color: #FF9090;
+    text-align: center;
+    justify-content: center;
 }
 
 a:link

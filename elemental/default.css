@@ -60,7 +60,8 @@ body
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
-#WordButton:focus{
+#WordButton:focus
+{
     outline: none;
 }
 
@@ -106,7 +107,18 @@ img.ImageElement
 #ResultImgDiv
 {
     padding: 15px;
+    text-align: center;
+    justify-content: center;
 }
+
+#ResultDiv
+{
+    padding: 15px;
+    color: #FF9090;
+    text-align: center;
+    justify-content: center;
+}
+
 
 a:link
 {
@@ -162,3 +174,4 @@ td.tdAppName
     width: 120px;
     padding: 5px;
 }
+
