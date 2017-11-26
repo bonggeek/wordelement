@@ -6,9 +6,12 @@
 <meta name="author" content="Abhinaba Basu">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" type="text/css" href="default.css" />
+<!--
 <link rel="stylesheet" media="screen and (orientation:portrait)" type="text/css" href="small.css" />
 <link rel="stylesheet" media="screen and (min-width:200px) and (max-width: 799px)" type="text/css" href="small.css" />
 <link rel="stylesheet" media="screen and (min-width: 800px)" type="text/css" href="default.css" />
+-->
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -36,7 +39,7 @@
         var words=document.getElementById('WordBox').value;
         $("#ResultImgDiv").empty();
         $("#ResultDiv").empty();
-        $("#ResultImgDiv").hide();
+        $("#ResultDiv").hide();
         // This is a sample server that supports CORS.
         var url = 'http://elemental.eastus.cloudapp.azure.com?words=' + words;
         var xhr = createCORSRequest('GET', url);
@@ -52,35 +55,40 @@
             if (res.length == 0){
                 return;
             }
-            var str = '';
             for (var i=0; i < res.length; i++){
                 var r = res[i];
-                str += '<h3>';
-                str += r.Word;
-                str += '</h3>';
-                str += '<br>';
                 
                 for(var j = 0; j < r.Elements.length; j++){
                     var e = r.Elements[j];
-                    str += '<sup>' + e.AtNumber + '</sup>';
-                    str += e.Symbol;
-                    str += ' ';
                     
-                    var elem = document.createElement("img");
-                    elem.className = "ImageElement";
-                    elem.setAttribute("src", "./images/" + e.AtNumber + ".jpg");
-                    elem.setAttribute("alt", e.Name);
-                    $("#ResultImgDiv").append(elem);
+                    var elem = document.createElement("div");
+                    if(e.Real) {
+                        elem.className = "ResultBox";
+                    } else {
+                        elem.className = "ResultBoxFake";
+                    }
+
+                    var at = document.createElement("div");
+                    at.className = "AtNumber";
+                    at.appendChild(document.createTextNode(e.AtNumber));
+
+                    var sym = document.createElement("div");
+                    sym.className = "AtSymbol";
+                    sym.appendChild(document.createTextNode(e.Symbol));
+
+                    var name = document.createElement("div");
+                    name.className = "AtName";
+                    name.appendChild(document.createTextNode(e.Name));
+
+                    elem.appendChild(at);
+                    elem.appendChild(sym);
+                    elem.appendChild(name);
+
+                    document.getElementById("ResultDiv").appendChild(elem);
                 }
 
-                $("#ResultImgDiv").append('<br>');
-                $("#ResultImgDiv").fadeIn(2000);
-
-                str += '\r\n';
+                $("#ResultDiv").fadeIn(2000);
             }
-
-            //$("#ResultDiv").html(str);
-
         };
         
         xhr.onerror = function() {
@@ -115,7 +123,8 @@
                 <button id="SearchButton" onclick="fetchElement()"></button>
             </div>
         </div>
-        <div id="ResultImgDiv"></div>
+        <div id="ResultImgDiv">
+        </div>
         <div id="ResultDiv"></div>
    </div>
  </body>
