@@ -58,7 +58,7 @@ body
     flex: 1;
     -webkit:flex: 1;
     -ms-flex: 1;
-     float: left;
+    float: left;
 
     height: 40px;
     border: none; 
@@ -136,6 +136,12 @@ img.ImageElement
     text-align: center;
     justify-content: center;
 }
+
+.ResultBoxBreak
+{
+    clear: both;
+}
+
 
 .ResultBox
 {
