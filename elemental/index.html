@@ -37,6 +37,8 @@
     // Make the actual CORS request.
     function fetchElement() {
         var words=document.getElementById('WordBox').value;
+        $("#BannerImg").attr('src', "./banner_narrow.jpg");
+        
         $("#ResultImgDiv").empty();
         $("#ResultDiv").empty();
         $("#ResultDiv").hide();
