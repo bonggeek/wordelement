@@ -124,8 +124,9 @@ img.ImageElement
     margin: 5px;
 }
 
-#ResultImgDiv
+#ResultDetailsDiv
 {
+    padding-top: 15px;
     text-align: center;
     justify-content: center;
 }
@@ -167,7 +168,7 @@ img.ImageElement
 
 .AtNumber
 {
-    padding: 2px;
+    padding: 2px
     font-size: 10px;
     text-align: left;
 }
@@ -184,6 +185,25 @@ img.ImageElement
 {
     font-size: 10px;
     text-align: center;
+}
+
+.ResultBoxDetailed{
+    text-align: left;
+    float: left;
+}
+
+.ResultBoxDetailedAtSymbol{
+    font-weight: bold;
+    font-size: 12px;
+    padding: 3px;
+    float: left;
+    width: 20px;
+}
+
+.ResultBoxDetailedAtDescription{
+    font-size: 12px;
+    padding: 3px;
+    float: left;
 }
 
 a:link

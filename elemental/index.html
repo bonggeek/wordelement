@@ -33,13 +33,62 @@
         return xhr;
     }
 
+    function addResult(div, e){
+        var elem = document.createElement("div");
+        if(e.Real) {
+            elem.className = "ResultBox";
+        } else {
+            elem.className = "ResultBoxFake";
+        }
+        
+        var at = document.createElement("div");
+        at.className = "AtNumber";
+        at.appendChild(document.createTextNode(e.AtNumber));
+        
+        var sym = document.createElement("div");
+        sym.className = "AtSymbol";
+        sym.appendChild(document.createTextNode(e.Symbol));
+        
+        var name = document.createElement("div");
+        name.className = "AtName";
+        name.appendChild(document.createTextNode(e.Name));
+        
+        elem.appendChild(at);
+        elem.appendChild(sym);
+        elem.appendChild(name);
+                
+        div.appendChild(elem);
+    }
+
+
+    function addResultDetails(div, e, elemSet) {
+        if(e.Description.length > 0 && !(elemSet[e.AtNumber]) ){
+            var elem = document.createElement("div");
+            elem.className = "ResultBoxDetailed";
+
+            var atSymbol = document.createElement("div");
+            atSymbol.className = "ResultBoxDetailedAtSymbol";
+            atSymbol.appendChild(document.createTextNode(e.Symbol));
+            elem.appendChild(atSymbol);
+        
+            var atDesc = document.createElement("div");
+            atDesc.className = "ResultBoxDetailedAtDescription";
+            atDesc.appendChild(document.createTextNode(e.Description));
+            elem.appendChild(atDesc);
+ 
+            div.appendChild(elem);
+
+            elemSet[e.AtNumber] = true;
+        }
+    }
 
     // Make the actual CORS request.
     function fetchElement() {
         var words=document.getElementById('WordBox').value;
         $("#BannerImg").attr('src', "./banner_narrow.jpg");
         
-        $("#ResultImgDiv").empty();
+        $("#ResultDetailsDiv").empty();
+        $("#ResultDetailsDiv").hide();
         $("#ResultDiv").empty();
         $("#ResultDiv").hide();
         // This is a sample server that supports CORS.
@@ -57,45 +106,31 @@
             if (res.length == 0){
                 return;
             }
+
+            var elementSet = [];
+            resultDiv = document.getElementById("ResultDiv");
+            resultDetDiv = document.getElementById("ResultDetailsDiv");
             for (var i=0; i < res.length; i++){
                 var r = res[i];
                 
                 for(var j = 0; j < r.Elements.length; j++){
                     var e = r.Elements[j];
-                    
-                    var elem = document.createElement("div");
-                    if(e.Real) {
-                        elem.className = "ResultBox";
-                    } else {
-                        elem.className = "ResultBoxFake";
-                    }
-
-                    var at = document.createElement("div");
-                    at.className = "AtNumber";
-                    at.appendChild(document.createTextNode(e.AtNumber));
-
-                    var sym = document.createElement("div");
-                    sym.className = "AtSymbol";
-                    sym.appendChild(document.createTextNode(e.Symbol));
-
-                    var name = document.createElement("div");
-                    name.className = "AtName";
-                    name.appendChild(document.createTextNode(e.Name));
-
-                    elem.appendChild(at);
-                    elem.appendChild(sym);
-                    elem.appendChild(name);
-
-                    document.getElementById("ResultDiv").appendChild(elem);
+                    addResult(resultDiv, e);
+                    addResultDetails(resultDetDiv, e, elementSet);
                 }
 
-                var breakBox = document.createElement("div");
-                breakBox.className = "ResultBoxBreak";
- 
-                document.getElementById("ResultDiv").appendChild(breakBox);
+                var breakBox1 = document.createElement("div");
+                breakBox1.className = "ResultBoxBreak";
+                resultDiv.appendChild(breakBox1);
+
+                var breakBox2 = document.createElement("div");
+                breakBox2.className = "ResultBoxBreak";
+                resultDetDiv.appendChild(breakBox2);
             }
             
-            $("#ResultDiv").fadeIn(2000);
+            $("#ResultDiv").fadeIn(1000);
+            $("#ResultDetailsDiv").fadeIn(2000);
+
         };
         
         xhr.onerror = function() {
@@ -130,9 +165,8 @@
                 <button id="SearchButton" onclick="fetchElement()"></button>
             </div>
         </div>
-        <div id="ResultImgDiv">
-        </div>
-        <div id="ResultDiv"></div>
-   </div>
+       <div id="ResultDiv"></div>
+       <div id="ResultDetailsDiv"></div>
+    </div>
  </body>
 </html>
